@@ -39,9 +39,15 @@ function startTimer() {
     }
 }
 
-function newQuote() {
-    const randomIndex = Math.floor(Math.random() * 7);
-    currentQuote = quotes[randomIndex];
+async function getQuote() {
+    typeString.textContent =''; // Resets Quote
+    const response = await fetch("https://api.quotable.io/random");
+    const data = await response.json();
+    if(response.ok) {
+        currentQuote = data.content;
+    }
+    // const randomIndex = Math.floor(Math.random() * 7);
+    // currentQuote = quotes[randomIndex];
 }
 
 function typing() {
@@ -54,10 +60,10 @@ function typing() {
     // checkKeys();
 }
 
-function checkKeys(keyPress) {
+function checkKeys() {
     const words = document.querySelectorAll("i");
     let inputValue = userInput.value.split("");
-    for (let i = 0; i < words.length - 1; i++) {
+    for (let i = 0; i < words.length; i++) {
         const letter = inputValue[i];
         if(letter === words[i].innerText) {
             words[i].classList.add("correct");
@@ -71,20 +77,25 @@ function checkKeys(keyPress) {
 
 // EVENT LISTENERS
 
-startBtn.addEventListener("click", () => {
-    newQuote();
-    // on clicking start button timing button starts
-    startTimer();
-    // when typing, user is shown whether what they typed was correct or incorrect
-    typing();
-    // after finishing typing the sentence, score is saved (remaining time)
+document.addEventListener("DOMContentLoaded", getQuote);
 
-    // if timer runs out, game is over and asks if user wants to play again
+startBtn.addEventListener("click", () => {
+    getQuote();
+    if (currentQuote) {
+        // on clicking start button timing button starts
+        startTimer();
+        // when typing, user is shown whether what they typed was correct or incorrect
+        typing();
+        // after finishing typing the sentence, score is saved (remaining time)
+
+        // if timer runs out, game is over and asks if user wants to play again
+    }
+
 });
 
 userInput.addEventListener("input", (key) => {
     if(timer) {
-        checkKeys(key.data);
+        checkKeys();
     }
     // console.log(key.data);
 })

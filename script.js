@@ -4,15 +4,26 @@
 const score = document.getElementById("score");
 const time = document.getElementById("time");
 let playerScore = 0;
-let timeRemaining = 60;
+let timeRemaining = 60; //Level 1 initial time
 
 // game variables
 const typeString = document.getElementById("type-string");
 const userInput = document.getElementById("user-input");
 const startBtn = document.getElementById("start");
+const levelEl = document.getElementById("level");
 let timer;
 let currentQuote;
 let currentStar = 1;
+let currentLevel = 1;
+
+const levels = {
+    1: 60,
+    2: 50,
+    3: 45,
+    4: 40,
+    5: 35,
+    6: 30
+};
 
 // let quote = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
 // const quotes = [
@@ -49,6 +60,7 @@ async function getQuote() {
     }
     // const randomIndex = Math.floor(Math.random() * 7);
     // currentQuote = quotes[randomIndex];
+    // console.log(currentQuote)
 }
 
 function typing() {
@@ -89,6 +101,8 @@ function checkWinner() {
             getQuote();
             typing();
             addStar();
+            timeRemaining = levels[currentLevel];
+            startTimer();
         }
 }
 
@@ -100,7 +114,7 @@ function addStar() {
         currentStarEl.classList.remove("star-incomplete");
         currentStar++;
     } else {
-        //nextLevel();
+        nextLevel();
         stars.forEach((star)=> {
             star.classList.remove("star-complete");
             star.classList.add("star-incomplete");
@@ -109,7 +123,10 @@ function addStar() {
     }
 }
 
-
+function nextLevel() {
+    currentLevel++;
+    levelEl.textContent = currentLevel;
+}
 
 // EVENT LISTENERS
 

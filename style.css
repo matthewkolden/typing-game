@@ -29,6 +29,17 @@ body {
     box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 15%), inset 0 -1px 0 rgb(0 0 0 / 15%);
 }
 
+#level-header {
+    text-align: center;
+    margin: 0.5rem auto 2rem;
+}
+
+.info {
+    color: rgb(220, 220, 220);
+    align-self: flex-end;
+    margin-bottom: 1rem;
+}
+
 #scoreboard p {
     margin: 8px;
 }
@@ -70,11 +81,6 @@ body {
     box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 15%), inset 0 -1px 0 rgb(0 0 0 / 15%);
 }
 
-.info {
-    color: rgb(220, 220, 220);
-    align-self: flex-end;
-    margin-bottom: 1rem;
-}
 
 .info:hover {
     color: #000

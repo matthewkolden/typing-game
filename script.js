@@ -12,17 +12,18 @@ const userInput = document.getElementById("user-input");
 const startBtn = document.getElementById("start");
 let timer;
 let currentQuote;
+let currentStar = 1;
 
 // let quote = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
-const quotes = [
-    "The greatest glory in living lies not in never falling, but in rising every time we fall.",
-    "The way to get started is to quit talking and begin doing.",
-    "Your time is limited, so don't waste it living someone else's life. Don't be trapped by dogma.",
-    "If life were predictable it would cease to be life, and be without flavor.",
-    "If you look at what you have in life, you'll always have more. If you look at what you don't have in life, you'll never have enough.",
-    "If you set your goals ridiculously high and it's a failure, you will fail above everyone else's success.",
-    "Life is what happens when you're busy making other plans."
-]
+// const quotes = [
+//     "The greatest glory in living lies not in never falling, but in rising every time we fall.",
+//     "The way to get started is to quit talking and begin doing.",
+//     "Your time is limited, so don't waste it living someone else's life. Don't be trapped by dogma.",
+//     "If life were predictable it would cease to be life, and be without flavor.",
+//     "If you look at what you have in life, you'll always have more. If you look at what you don't have in life, you'll never have enough.",
+//     "If you set your goals ridiculously high and it's a failure, you will fail above everyone else's success.",
+//     "Life is what happens when you're busy making other plans."
+// ]
 
 
 // FUNCTIONS
@@ -53,7 +54,8 @@ async function getQuote() {
 function typing() {
     const words = currentQuote.split("");
     words.forEach((letter) => {
-        const lettersEl = document.createElement("i");
+        const lettersEl = document.createElement("span");
+        lettersEl.classList.add("letter");
         lettersEl.textContent = letter;
         typeString.append(lettersEl);
     })
@@ -61,7 +63,7 @@ function typing() {
 }
 
 function checkKeys() {
-    const words = document.querySelectorAll("i");
+    const words = document.querySelectorAll(".letter");
     let inputValue = userInput.value.split("");
     for (let i = 0; i < words.length; i++) {
         const letter = inputValue[i];
@@ -75,6 +77,40 @@ function checkKeys() {
     }
 }
 
+function checkWinner() {
+        const checkCorrect = []
+        for (let i = 0 ; i < document.querySelectorAll(".letter").length; i++) {
+            checkCorrect[i] = document.querySelectorAll(".letter")[i].classList.contains("correct");
+        }
+        if (checkCorrect.includes(false)) {
+            return;
+        } else {
+            userInput.value = "";
+            getQuote();
+            typing();
+            addStar();
+        }
+}
+
+function addStar() {
+    const currentStarEl = document.querySelector(`.star-${currentStar}`);
+    const stars = document.querySelectorAll(`.star-complete`);
+    if(currentStar < 3) {
+        currentStarEl.classList.add("star-complete");
+        currentStarEl.classList.remove("star-incomplete");
+        currentStar++;
+    } else {
+        //nextLevel();
+        stars.forEach((star)=> {
+            star.classList.remove("star-complete");
+            star.classList.add("star-incomplete");
+        })
+        currentStar = 1;
+    }
+}
+
+
+
 // EVENT LISTENERS
 
 document.addEventListener("DOMContentLoaded", getQuote);
@@ -82,6 +118,7 @@ document.addEventListener("DOMContentLoaded", getQuote);
 startBtn.addEventListener("click", () => {
     getQuote();
     if (currentQuote) {
+        startBtn.classList.add("hidden");
         // on clicking start button timing button starts
         startTimer();
         // when typing, user is shown whether what they typed was correct or incorrect
@@ -90,12 +127,14 @@ startBtn.addEventListener("click", () => {
 
         // if timer runs out, game is over and asks if user wants to play again
     }
-
 });
 
-userInput.addEventListener("input", (key) => {
+userInput.addEventListener("input", () => {
     if(timer) {
         checkKeys();
+        // Check to see if user input all words correctly; if so change quote
+        checkWinner();
     }
     // console.log(key.data);
+
 })

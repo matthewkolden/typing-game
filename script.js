@@ -15,6 +15,7 @@ let timer;
 let currentQuote;
 let currentStar = 1;
 let currentLevel = 1;
+let progress = 0;
 
 const levels = {
     1: 60,
@@ -107,11 +108,15 @@ function checkWinner() {
 }
 
 function addStar() {
-    const currentStarEl = document.querySelector(`.star-${currentStar}`);
+    const currentStarEl = document.querySelectorAll(`.star-${currentStar}`);
     const stars = document.querySelectorAll(`.star-complete`);
     if(currentStar < 3) {
-        currentStarEl.classList.add("star-complete");
-        currentStarEl.classList.remove("star-incomplete");
+        currentStarEl.forEach((star) => {
+            star.classList.add("star-complete");
+            star.classList.remove("star-incomplete");
+        })
+        progress += (100/3);
+        document.querySelector(".current-progress").style.width = `${progress}%`
         currentStar++;
     } else {
         nextLevel();
@@ -119,6 +124,8 @@ function addStar() {
             star.classList.remove("star-complete");
             star.classList.add("star-incomplete");
         })
+        progress = 0;
+        document.querySelector(".current-progress").style.width = `${progress}%`
         currentStar = 1;
     }
 }

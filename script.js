@@ -11,6 +11,8 @@ const typeString = document.getElementById("type-string");
 const userInput = document.getElementById("user-input");
 const startBtn = document.getElementById("start");
 const levelEl = document.getElementById("level");
+const gameOverEl = document.querySelector("#game-over");
+const playAgainEl = document.getElementById("play-again");
 let timer;
 let currentQuote;
 let currentQuoteLength;
@@ -48,11 +50,16 @@ function startTimer() {
       timeRemaining--;
       time.textContent = timeRemaining;
       if (timeRemaining <= 0) {
+        gameOver();
         clearInterval(timer);
         // LOSE
       }
     }, 1000);
   }
+}
+
+function gameOver() {
+  gameOverEl.style.display = "block";
 }
 
 async function getQuote() {
@@ -65,9 +72,9 @@ async function getQuote() {
   }
   // const randomIndex = Math.floor(Math.random() * 7);
   // currentQuote = quotes[randomIndex];
-  console.log(currentQuote)
-//   console.log(currentQuoteWords);
-    // countWords();
+  console.log(currentQuote);
+  //   console.log(currentQuoteWords);
+  // countWords();
 }
 
 function typing() {
@@ -83,7 +90,6 @@ function typing() {
 }
 
 function checkKeys() {
-
   const words = document.querySelectorAll(".letter");
   let inputValue = userInput.value.split("");
   for (let i = 0; i < words.length; i++) {
@@ -107,18 +113,18 @@ function countWords(keyPressed) {
   for (let i = 0; i < correctWords.length; i++) {
     userIndex = i;
   }
-  for (let j = 0; j < invalid.length; j++){
+  for (let j = 0; j < invalid.length; j++) {
     if (keyPressed === invalid[j]) {
       numInvalid++;
     }
   }
   userIndex -= numInvalid;
 
-  wpm = Math.round(((userIndex / 5) / (levels[currentLevel] - timeRemaining)) * 60);
+  wpm = Math.round(
+    (userIndex / 5 / (levels[currentLevel] - timeRemaining)) * 60
+  );
   document.getElementById("score").textContent = wpm;
 }
-
-
 
 function checkWinner() {
   const checkCorrect = [];
@@ -140,8 +146,6 @@ function checkWinner() {
     timeRemaining = levels[currentLevel];
     startTimer();
   }
-
-
 }
 
 function addStar() {
@@ -184,8 +188,6 @@ startBtn.addEventListener("click", () => {
     startTimer();
     // when typing, user is shown whether what they typed was correct or incorrect
     typing();
-    // after finishing typing the sentence, score is saved (remaining time)
-
     // if timer runs out, game is over and asks if user wants to play again
   }
 });
@@ -193,10 +195,12 @@ startBtn.addEventListener("click", () => {
 userInput.addEventListener("input", (key) => {
   if (timer) {
     checkKeys();
-
     countWords(key.data);
-
     // Check to see if user input all words correctly; if so change quote
     checkWinner();
   }
+});
+
+playAgainEl.addEventListener("click", () => {
+  window.location.reload();
 });

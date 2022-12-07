@@ -34,17 +34,6 @@ const levels = {
   6: 30,
 };
 
-// let quote = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
-// const quotes = [
-//     "The greatest glory in living lies not in never falling, but in rising every time we fall.",
-//     "The way to get started is to quit talking and begin doing.",
-//     "Your time is limited, so don't waste it living someone else's life. Don't be trapped by dogma.",
-//     "If life were predictable it would cease to be life, and be without flavor.",
-//     "If you look at what you have in life, you'll always have more. If you look at what you don't have in life, you'll never have enough.",
-//     "If you set your goals ridiculously high and it's a failure, you will fail above everyone else's success.",
-//     "Life is what happens when you're busy making other plans."
-// ]
-
 // FUNCTIONS
 function startTimer() {
   if (!timer) {
@@ -72,11 +61,7 @@ async function getQuote() {
     currentQuote = data.content;
     currentQuoteLength = data.length;
   }
-  // const randomIndex = Math.floor(Math.random() * 7);
-  // currentQuote = quotes[randomIndex];
-  console.log(currentQuote);
-  //   console.log(currentQuoteWords);
-  // countWords();
+  // console.log(currentQuote);
 }
 
 function typing() {
@@ -121,7 +106,7 @@ function countWords(keyPressed) {
     }
   }
   userIndex -= numInvalid;
-
+  // words per minute is calculated by counting every five letter except for invalid characters
   wpm = Math.round(
     (userIndex / 5 / (levels[currentLevel] - timeRemaining)) * 60
   );
@@ -136,8 +121,6 @@ function checkWinner() {
       .querySelectorAll(".letter")
       [i].classList.contains("correct");
   }
-
-  // console.log(checkCorrect);
   if (checkCorrect.includes(false)) {
     return;
   } else {
@@ -180,17 +163,14 @@ function nextLevel() {
 
 // EVENT LISTENERS
 
-document.addEventListener("DOMContentLoaded", getQuote);
+document.addEventListener("DOMContentLoaded", getQuote); // Loads quote before game is started
 
 startBtn.addEventListener("click", () => {
   getQuote();
   if (currentQuote) {
     startBtn.classList.add("hidden");
-    // on clicking start button timing button starts
     startTimer();
-    // when typing, user is shown whether what they typed was correct or incorrect
     typing();
-    // if timer runs out, game is over and asks if user wants to play again
   }
 });
 
@@ -209,8 +189,8 @@ playAgainEl.addEventListener("click", () => {
 
 infoEl.addEventListener("click", () => {
   document.getElementById("how-to").style.display = "block";
-})
+});
 
 exitEl.addEventListener("click", () => {
   document.getElementById("how-to").style.display = "none";
-})
+});

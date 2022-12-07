@@ -13,6 +13,8 @@ const startBtn = document.getElementById("start");
 const levelEl = document.getElementById("level");
 const gameOverEl = document.querySelector("#game-over");
 const playAgainEl = document.getElementById("play-again");
+const infoEl = document.querySelector(".info");
+const exitEl = document.getElementById("exit");
 let timer;
 let currentQuote;
 let currentQuoteLength;
@@ -204,3 +206,11 @@ userInput.addEventListener("input", (key) => {
 playAgainEl.addEventListener("click", () => {
   window.location.reload();
 });
+
+infoEl.addEventListener("click", () => {
+  document.getElementById("how-to").style.display = "block";
+})
+
+exitEl.addEventListener("click", () => {
+  document.getElementById("how-to").style.display = "none";
+})

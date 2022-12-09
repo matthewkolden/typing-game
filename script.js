@@ -41,7 +41,7 @@ const levels = {
   7: 25,
   8: 20,
   9: 15,
-  10: 10
+  10: 10,
 };
 
 // FUNCTIONS
@@ -165,10 +165,10 @@ function addStar() {
 function nextLevel() {
   const wpmEl = document.getElementById("wpm");
   let totalWpm = 0;
-  let index = 0
+  let index = 0;
   for (let i = 0; i < wpmScores.length; i++) {
-      totalWpm += wpmScores[i]
-      index++
+    totalWpm += wpmScores[i];
+    index++;
   }
   avgWpm = Math.round(totalWpm / index);
   wpmEl.textContent = avgWpm;
@@ -245,7 +245,7 @@ nextLevelBtn.addEventListener("click", () => {
   nextLevelEl.style.display = "none";
   levelEl.forEach((level) => {
     level.textContent = currentLevel;
-  })
+  });
   startTimer();
   const stars = document.querySelectorAll(`.star-complete`);
   stars.forEach((star) => {
@@ -255,4 +255,4 @@ nextLevelBtn.addEventListener("click", () => {
   progress = 0;
   document.querySelector(".current-progress").style.width = `${progress}%`;
   currentStar = 1;
-})
+});

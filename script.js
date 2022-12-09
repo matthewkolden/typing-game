@@ -10,11 +10,14 @@ let timeRemaining = 60; //Level 1 initial time
 const typeString = document.getElementById("type-string");
 const userInput = document.getElementById("user-input");
 const startBtn = document.getElementById("start");
-const levelEl = document.getElementById("level");
+const levelEl = document.querySelectorAll(".level");
 const gameOverEl = document.querySelector("#game-over");
 const playAgainEl = document.getElementById("play-again");
 const infoEl = document.querySelector(".info");
 const exitEl = document.getElementById("exit");
+const nextLevelEl = document.getElementById("next-level");
+const nextLevelBtn = document.getElementById("next");
+
 let timer;
 let currentQuote;
 let currentQuoteLength;
@@ -24,6 +27,9 @@ let currentLevel = 1;
 let progress = 0;
 let wordsTyped = 0;
 let userIndex = 0;
+let wpm;
+let wpmScores = [];
+let avgWpm;
 
 const levels = {
   1: 60,
@@ -32,6 +38,10 @@ const levels = {
   4: 40,
   5: 35,
   6: 30,
+  7: 25,
+  8: 20,
+  9: 15,
+  10: 10
 };
 
 // FUNCTIONS
@@ -94,7 +104,6 @@ function checkKeys() {
 function countWords(keyPressed) {
   const invalid = [".", ",", ";", " "];
   let numInvalid = 0;
-  let wpm;
 
   const correctWords = document.querySelectorAll(".correct");
   for (let i = 0; i < correctWords.length; i++) {
@@ -125,11 +134,11 @@ function checkWinner() {
     return;
   } else {
     userInput.value = "";
+    wpmScores.push(wpm);
     getQuote();
     typing();
     addStar();
     timeRemaining = levels[currentLevel];
-    startTimer();
   }
 }
 
@@ -145,20 +154,59 @@ function addStar() {
     document.querySelector(".current-progress").style.width = `${progress}%`;
     currentStar++;
   } else {
-    nextLevel();
-    stars.forEach((star) => {
-      star.classList.remove("star-complete");
-      star.classList.add("star-incomplete");
+    currentStarEl.forEach((star) => {
+      star.classList.add("star-complete");
+      star.classList.remove("star-incomplete");
     });
-    progress = 0;
-    document.querySelector(".current-progress").style.width = `${progress}%`;
-    currentStar = 1;
+    nextLevel();
   }
 }
 
 function nextLevel() {
+  const wpmEl = document.getElementById("wpm");
+  let totalWpm = 0;
+  let index = 0
+  for (let i = 0; i < wpmScores.length; i++) {
+      totalWpm += wpmScores[i]
+      index++
+  }
+  avgWpm = Math.round(totalWpm / index);
+  wpmEl.textContent = avgWpm;
+  nextLevelEl.style.display = "block";
+  clearInterval(timer);
+  timer = null;
   currentLevel++;
+
+  wpmScores = [];
+  avgWpm = 0;
+  score.textContent = "0";
+  time.textContent = "0";
+}
+
+function reset() {
+  startBtn.classList.remove("hidden");
+  gameOverEl.style.display = "none";
+  typeString.textContent = "";
+
+  progress = 0;
+  document.querySelector(".current-progress").style.width = `${progress}%`;
+
+  currentLevel = 1;
   levelEl.textContent = currentLevel;
+
+  document.querySelectorAll(`.star-complete`).forEach((star) => {
+    star.classList.remove("star-complete");
+    star.classList.add("star-incomplete");
+  });
+
+  wpm = 0;
+  avgWpm = 0;
+  wpmScores = [];
+  document.getElementById("score").textContent = wpm;
+
+  timeRemaining = 60;
+  time.textContent = timeRemaining;
+  timer = null;
 }
 
 // EVENT LISTENERS
@@ -183,9 +231,7 @@ userInput.addEventListener("input", (key) => {
   }
 });
 
-playAgainEl.addEventListener("click", () => {
-  window.location.reload();
-});
+playAgainEl.addEventListener("click", reset);
 
 infoEl.addEventListener("click", () => {
   document.getElementById("how-to").style.display = "block";
@@ -194,3 +240,19 @@ infoEl.addEventListener("click", () => {
 exitEl.addEventListener("click", () => {
   document.getElementById("how-to").style.display = "none";
 });
+
+nextLevelBtn.addEventListener("click", () => {
+  nextLevelEl.style.display = "none";
+  levelEl.forEach((level) => {
+    level.textContent = currentLevel;
+  })
+  startTimer();
+  const stars = document.querySelectorAll(`.star-complete`);
+  stars.forEach((star) => {
+    star.classList.remove("star-complete");
+    star.classList.add("star-incomplete");
+  });
+  progress = 0;
+  document.querySelector(".current-progress").style.width = `${progress}%`;
+  currentStar = 1;
+})

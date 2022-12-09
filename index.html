@@ -20,7 +20,6 @@
     <title>Document</title>
   </head>
   <body>
-    
     <div id="game-over" class="modal">
       <div id="game-over-text" class="modal-textbox">
         <h2>Game Over</h2>
@@ -32,13 +31,34 @@
       <div id="how-to-text" class="modal-textbox">
         <i id="exit" class="fa-solid fa-circle-xmark fa-xl"></i>
         <h2>How To Play</h2>
-        <p>Once you hit the start button, your quote will appear above the text box and the timer will start counting down. Finish typing the quote within the alloted time and you will be rewarded with stars! Collect three stars and move on to the next level. The amount of time provided will decrease with each level, so watch out!</p>
+        <p>
+          Once you hit the start button, your quote will appear above the text
+          box and the timer will start counting down. Finish typing the quote
+          within the alloted time and you will be rewarded with stars! Collect
+          three stars and move on to the next level. The amount of time provided
+          will decrease with each level, so watch out!
+        </p>
+      </div>
+    </div>
+
+    <div id="next-level" class="modal">
+      <div id="next-level-text" class="modal-textbox">
+        <div class="star-flex">
+          <i class="fa-solid fa-star star-1 star-incomplete fa-xl"></i>
+          <i class="fa-solid fa-star star-2 star-incomplete fa-xl"></i>
+          <i class="fa-solid fa-star star-3 star-incomplete fa-xl"></i>
+        </div>
+        <h2>Level <span class=level>1</span></h2>
+        <h3>Good job on completing this level!</h3>
+        <h3>Average WPM: <span id="wpm">0</span></h3>
+
+        <button id="next">Next Level</button>
       </div>
     </div>
 
     <div id="scoreboard">
       <i class="fa-solid fa-circle-info info"></i>
-      <h4 id="level-header">Level <span id="level">1</span></h4>
+      <h4 id="level-header">Level <span class="level">1</span></h4>
       <div class="star-flex">
         <i class="fa-solid fa-star star-1 star-incomplete"></i>
         <i class="fa-solid fa-star star-2 star-incomplete"></i>

@@ -192,7 +192,9 @@ function reset() {
   document.querySelector(".current-progress").style.width = `${progress}%`;
 
   currentLevel = 1;
-  levelEl.textContent = currentLevel;
+  levelEl.forEach((level) => {
+    level.textContent = currentLevel;
+  });
 
   document.querySelectorAll(`.star-complete`).forEach((star) => {
     star.classList.remove("star-complete");

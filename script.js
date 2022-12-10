@@ -38,7 +38,7 @@ const levels = {
   3: 45,
   4: 40,
   5: 35,
-  6: 30
+  6: 30,
 };
 
 // FUNCTIONS
@@ -58,26 +58,27 @@ function startTimer() {
 
 function gameOver() {
   gameOverEl.style.display = "block";
-  document.querySelector("#game-over-text h2").textContent = "Game Over"
+  document.querySelector("#game-over-text h2").textContent = "Game Over";
   let max = 0;
-  for (let i = 0; i < wpmAll.length; i ++) {
+  for (let i = 0; i < wpmAll.length; i++) {
     if (wpmAll[i] > max) {
       max = wpmAll[i];
     }
-    document.getElementById("high-score").textContent = max
+    document.getElementById("high-score").textContent = max;
   }
   if (currentLevel === 7) {
-    document.querySelector("#game-over-text h2").textContent = "Congratulations!"
+    document.querySelector("#game-over-text h2").textContent =
+      "Congratulations!";
   }
 }
 
 async function getQuote() {
   typeString.textContent = ""; // Resets Quote
-  const response = await fetch("https://api.quotable.io/random");
+  const response = await fetch("https://api.quotable.io/random"); // https://github.com/lukePeavey/quotable
   const data = await response.json();
   if (response.ok) {
     currentQuote = data.content;
-    currentQuoteLength = data.length;
+    // currentQuoteLength = data.length;
   }
   // console.log(currentQuote);
 }
@@ -159,10 +160,12 @@ function addStar() {
       star.classList.add("star-complete");
       star.classList.remove("star-incomplete");
     });
-    progress += 100 / 3;
+    progress += (100 / 3);
     document.querySelector(".current-progress").style.width = `${progress}%`;
     currentStar++;
   } else {
+    progress += (100 / 3);
+    document.querySelector(".current-progress").style.width = `${progress}%`;
     currentStarEl.forEach((star) => {
       star.classList.add("star-complete");
       star.classList.remove("star-incomplete");
@@ -191,7 +194,7 @@ function nextLevel() {
   score.textContent = "0";
   time.textContent = "0";
 
-  if(currentLevel === 7) {
+  if (currentLevel === 7) {
     gameOver();
     levelEl.textContent = 0;
     nextLevelEl.style.display = "none";

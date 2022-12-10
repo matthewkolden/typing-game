@@ -29,6 +29,7 @@ let wordsTyped = 0;
 let userIndex = 0;
 let wpm;
 let wpmScores = [];
+let wpmAll = [];
 let avgWpm;
 
 const levels = {
@@ -37,11 +38,7 @@ const levels = {
   3: 45,
   4: 40,
   5: 35,
-  6: 30,
-  7: 25,
-  8: 20,
-  9: 15,
-  10: 10,
+  6: 30
 };
 
 // FUNCTIONS
@@ -61,6 +58,17 @@ function startTimer() {
 
 function gameOver() {
   gameOverEl.style.display = "block";
+  document.querySelector("#game-over-text h2").textContent = "Game Over"
+  let max = 0;
+  for (let i = 0; i < wpmAll.length; i ++) {
+    if (wpmAll[i] > max) {
+      max = wpmAll[i];
+    }
+    document.getElementById("high-score").textContent = max
+  }
+  if (currentLevel === 7) {
+    document.querySelector("#game-over-text h2").textContent = "Congratulations!"
+  }
 }
 
 async function getQuote() {
@@ -135,6 +143,7 @@ function checkWinner() {
   } else {
     userInput.value = "";
     wpmScores.push(wpm);
+    wpmAll.push(wpm);
     getQuote();
     typing();
     addStar();
@@ -181,12 +190,19 @@ function nextLevel() {
   avgWpm = 0;
   score.textContent = "0";
   time.textContent = "0";
+
+  if(currentLevel === 7) {
+    gameOver();
+    levelEl.textContent = 0;
+    nextLevelEl.style.display = "none";
+  }
 }
 
 function reset() {
   startBtn.classList.remove("hidden");
   gameOverEl.style.display = "none";
   typeString.textContent = "";
+  userInput.value = "";
 
   progress = 0;
   document.querySelector(".current-progress").style.width = `${progress}%`;
@@ -203,7 +219,9 @@ function reset() {
 
   wpm = 0;
   avgWpm = 0;
+  currentStar = 1;
   wpmScores = [];
+  wpmAll = [];
   document.getElementById("score").textContent = wpm;
 
   timeRemaining = 60;

@@ -23,6 +23,7 @@
     <div id="game-over" class="modal">
       <div id="game-over-text" class="modal-textbox">
         <h2>Game Over</h2>
+        <h3>High Score: <span id="high-score"></span> wpm</h3>
         <button id="play-again">Play again?</button>
       </div>
     </div>
@@ -77,7 +78,7 @@
         id="user-input"
         placeholder="Enter the sentence that will be shown above as it's shown within the time remaining"
         autofocus
-        onpaste="return false;"
+        
       ></textarea>
     </div>
 
